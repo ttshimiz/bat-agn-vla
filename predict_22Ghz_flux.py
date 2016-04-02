@@ -41,14 +41,14 @@ def predict_22Ghz_flux(oneGHz_flux, alpha=0.1, gamma=0.8):
     nontherm_flux_22 = nontherm_flux_1400 / (1.4**(-gamma) / 22.**(-gamma))
     total_22 = (therm_flux_22 + nontherm_flux_22) * 10**26
     
-    return total_22
+    return total_22, therm_flux_22*10**26, nontherm_flux_22*10**26 
     
 
 def run_prediction(model, q=2.3, alpha=0.1, gamma=0.8):
 
     fir_flux = calc_fir_flux(model)
     oneGHz_flux = predict_1400mhz_flux(fir_flux, q=q)
-    predict_22 = predict_22Ghz_flux(oneGHz_flux, alpha=alpha, gamma=gamma)
+    predict_22, a, b = predict_22Ghz_flux(oneGHz_flux, alpha=alpha, gamma=gamma)
     
     return predict_22
     

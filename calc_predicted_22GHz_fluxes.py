@@ -2,14 +2,14 @@
 
 import numpy as np
 import pandas as pd
-
+import pickle
 import sys
 sys.path.append('/Users/ttshimiz/Github/bat-agn-sed-fitting/')
 
 import predict_22Ghz_flux as p2f
 
 # Upload the names of the VLA sources
-vla_names = np.loadtxt('bat_agn_vla_sources_names.txt', dtype=str)
+vla_names = np.loadtxt('lowznames.dat', dtype=str)
 bat_radio = pd.read_csv('/Users/ttshimiz/Github/bat-data/bat_20cm.csv', index_col=0)
 
 # Directory where the best fit model pickle files are located
@@ -28,8 +28,8 @@ for n in vla_names:
     oneGHz_predict_flux = p2f.predict_1400mhz_flux(fflux)
     predict_22 = p2f.predict_22Ghz_flux(oneGHz_predict_flux)
     
-    result.loc[n, '22 GHz Predict'] = predict_22
+    result.loc[n, '22 GHz Predict'] = predict_22[0]
     result.loc[n, '1.4 GHz Predict'] = oneGHz_predict_flux*10**26
 
 result = result.join(bat_radio)
-result.to_csv('predicted_22GHz_fluxes.csv', header=True, index_label='Name')
+result.to_csv('predicted_22GHz_fluxes_lowz.csv', header=True, index_label='Name')
